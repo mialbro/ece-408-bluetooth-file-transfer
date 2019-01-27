@@ -45,25 +45,14 @@ void connectToServer(char *address, DA *da) {
         status = write(s, getDA(da, i), sizeof(getDA(da, i)));
     }
 
-    if (status == 0) {
-        status = write(s, "HELLO", 5);
-        status = write(s, "WORLD", 5);
-        status = write(s, "MY", 2);
-        status = write(s, "NAME", 4);
-    }
-    
-
-    //if (status == 0)
-        //status = write(s, da, sizeDA(da));
-
-    if( status < 0 ) perror("uh oh");
+    if ( status < 0 ) 
+	perror("Unable To Send Data");
 
     close(s);
     return;
 }
 
-int main()
-{
+int main() {
     DA *da = newDA();
     debugDA(da, 0);
     setDAdisplay(da, displayString);
