@@ -1,4 +1,4 @@
-# ece492-lab
+# ece408-lab
 
 Sends Data between two raspberry pi's
 
