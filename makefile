@@ -1,9 +1,5 @@
 OOPTS = -Wall -Wextra -g -std=c99
 
-client: client
-
-server: server
-
 client : da.o cda.o stack.o rfcomm_client.o
 		gcc $(OOPTS) da.o cda.o stack.o rfcomm_client.o -o client -lbluetooth
 
