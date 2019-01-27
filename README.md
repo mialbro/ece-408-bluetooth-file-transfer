@@ -2,7 +2,7 @@
 
 Sends Data between two raspberry pi's
 
-Install Bluez: sudo apt-get install libbluetooth
-Run Server: make server
-Run Client: make client
-Remove Object / Executable Files: make clean
+__Install Bluez:__ sudo apt-get install libbluetooth
+__Run Server:__ make server
+__Run Client:__ make client
+__Remove Object / Executable Files:__ make clean
