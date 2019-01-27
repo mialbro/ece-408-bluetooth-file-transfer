@@ -17,8 +17,8 @@ da.o : da.c da.h
 
 
 stack.o : stack.c stack.h
-		gcc $(OOPTS) -c stack.c
+	gcc $(OOPTS) -c stack.c
 
 
 clean	:
-		rm -f da.o stack.o rfcomm_client.o ./server ./client
+	rm -f da.o cda.o stack.o rfcomm_client.o rfcomm_server.o ./server ./client
