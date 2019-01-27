@@ -12,7 +12,7 @@ void displayString(void *value, FILE *fp) {
     fprintf(fp, "%s", (char *)value); 
 }
 
-int main(int argc, char **argv)
+int main()
 {
     //DA *da = newDA();
     //setDAdisplay(da, displayString);
