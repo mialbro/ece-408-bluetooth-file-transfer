@@ -34,7 +34,7 @@ void connectToServer(char *address, DA *da) {
     // connect to server
     status = connect(s, (struct sockaddr *)&addr, sizeof(addr));
     
-    FILE *fp = fopen("file.txt", "r");
+    FILE *fp = fopen("gettysburg", "r");
     while (fscanf(fp, "%s", message) != EOF) {
         char *newData = malloc(sizeof(message));
         memcpy(newData, message, sizeof(message));
@@ -56,6 +56,6 @@ int main() {
     DA *da = newDA();
     debugDA(da, 0);
     setDAdisplay(da, displayString);
-    connectToServer("B8:27:EB:DC:E7:05", da);
+    connectToServer("B8:27:EB:DC:E7:05", da); // Connect to raspberry pi
     return 0;
 }

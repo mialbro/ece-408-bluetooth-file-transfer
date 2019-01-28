@@ -14,8 +14,8 @@ void displayString(void *value, FILE *fp) {
 
 int main()
 {
-    //DA *da = newDA();
-    //setDAdisplay(da, displayString);
+    DA *da = newDA();
+    setDAdisplay(da, displayString);
     struct sockaddr_rc loc_addr = { 0 }, rem_addr = { 0 };
     char buf[1024] = { 0 };
     int s, client, bytes_read;
@@ -42,11 +42,17 @@ int main()
     memset(buf, 0, sizeof(buf));
     
     bytes_read = read(client, buf, sizeof(buf));
+    FILE *fp = fopen("gettysburg", "w");
     // read data from the client
     while (bytes_read != -1) {
         printf("\n%s\n", (char *)buf);
+	insertDAback(da, buf);
         memset(buf, 0, sizeof(buf));
         bytes_read = read(client, buf, sizeof(buf));
+    }
+
+    for (int i = 0; i < sizeDA(da); i++) {
+	fprintf(fp, "%s", (char *)getDA(da, i));
     }
     
 
