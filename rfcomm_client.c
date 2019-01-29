@@ -34,8 +34,8 @@ void connectToServer(char *address, DA *da) {
     // connect to server
     status = connect(s, (struct sockaddr *)&addr, sizeof(addr));
     
-    FILE *fp = fopen("gettysburg", "r");
-    while (fscanf(fp, "%s", message) != EOF) {
+    FILE *fp = fopen("gettysburg", "rb");
+    while (fscanf(fp, "%c", message) != EOF) {
         char *newData = malloc(sizeof(message));
         memcpy(newData, message, sizeof(message));
         insertDAback(da, newData);
