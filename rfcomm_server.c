@@ -18,7 +18,7 @@ int main()
     setDAdisplay(da, displayString);
     struct sockaddr_rc loc_addr = { 0 }, rem_addr = { 0 };
     char buf[1024] = { 0 };
-    int s, client, bytes_read;
+    int s, client, bytes_read, i = 0;
     socklen_t opt = sizeof(rem_addr);
 
     // allocate socket
@@ -44,17 +44,22 @@ int main()
     bytes_read = read(client, buf, sizeof(buf));
     FILE *fp = fopen("gettysburg", "w");
     // read data from the client
-    while (bytes_read != -1) {
-        printf("\n%s\n", (char *)buf);
-	insertDAback(da, buf);
-        memset(buf, 0, sizeof(buf));
-        bytes_read = read(client, buf, sizeof(buf));
+    while (bytesReceived = read(client, recvBuff, 1024) > 0) {
+	i++;
+	printf("Received: %llf Mb", i / 1024));
+	fflush(stdout);
+	fwrite(recvBuff, 1, bytesReceived, fp);
+        //printf("\n%s\n", (char *)buf);
+	//insertDAback(da, buf);
+        //memset(buf, 0, sizeof(buf));
+        //bytes_read = read(client, buf, sizeof(buf));
     }
-
+/*
     for (int i = 0; i < sizeDA(da); i++) {
 	fprintf(fp, "%s", (char *)getDA(da, i));
     }
-    
+*/
+  fclose(fp);
 
     // close connection
     close(client);
