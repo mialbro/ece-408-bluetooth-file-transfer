@@ -7,7 +7,7 @@
 #include "da.h"
 
 void getFile(int client) {
-  char imageArr[1025], fileName[100], message[100];
+  char imageArr[1025], fileName[100], message[100], command[20];
   int size = 0, bytes = 0, bytesRead = 0;
   FILE *image = 0;
 
@@ -40,6 +40,9 @@ void getFile(int client) {
 	}
 	printf("File %s Received\n", fileName);
 	fclose(image);
+	strcpy(command, "xdg-open ");
+	strcat(command, fileName);
+	system(command);
 }
 
 int main() {
@@ -47,6 +50,8 @@ int main() {
     char buf[1024] = { 0 };
     int s, client;
     socklen_t opt = sizeof(rem_addr);
+
+  //system("bluetoothctl discoverable on");
 
     // allocate socket
     s = socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM);
@@ -73,5 +78,6 @@ int main() {
     // close connection
     close(client);
     close(s);
+//    system("bluetoothctl discoverable off");
     return 0;
 }
