@@ -7,9 +7,9 @@
 #include "da.h"
 
 void getFile(int socket, int client) {
-	char imageArr[10241];
-	int size = 0, bytes = 0, bytesRead = 0;
-	FILE *image = fopen("spacex.jpeg", "w");
+  char imageArr[10241];
+  int size = 0, bytes = 0, bytesRead = 0;
+  FILE *image = fopen("spacex.jpeg", "w");
 	
 	// Get the size of the file
 	bytes = read(client, &size, sizeof(int));
@@ -36,7 +36,7 @@ void displayString(void *value, FILE *fp) {
 int main() {
     struct sockaddr_rc loc_addr = { 0 }, rem_addr = { 0 };
     char buf[1024] = { 0 };
-    int s, client, bytes_read, i = 0;
+    int s, client;
     socklen_t opt = sizeof(rem_addr);
 
     // allocate socket
@@ -59,7 +59,7 @@ int main() {
     fprintf(stderr, "accepted connection from %s\n", buf);
     memset(buf, 0, sizeof(buf));
     
-	sendImage(s, client);
+    getFile(s, client);
 
     // close connection
     close(client);
