@@ -6,16 +6,34 @@
 
 #include "da.h"
 
-
+void getFile() {
+	char imageArr[10241];
+	int size = 0, bytes = 0, bytesRead = 0;
+	FILE *image = fopen("spacex.jpeg", "w");
+	
+	// Get the size of the file
+	bytes = read(client, &size, sizeof(int));
+	while (bytes < 0) 
+		bytes = read(client, &size, sizeof(int));
+	bytes = 0;
+	
+	// Read entire file
+	while (bytesRead < size) {
+		bytes = read(s, imageArr, 10241);
+		while (bytes < 0)
+			bytes = read(s, imageArr, 10241);
+		
+		fwrite(imageArr, 1, bytes, image);
+		bytesRead += bytes;
+	}
+	fclose(image);
+}
 
 void displayString(void *value, FILE *fp) {
     fprintf(fp, "%s", (char *)value); 
 }
 
-int main()
-{
-    DA *da = newDA();
-    setDAdisplay(da, displayString);
+int main() {
     struct sockaddr_rc loc_addr = { 0 }, rem_addr = { 0 };
     char buf[1024] = { 0 };
     int s, client, bytes_read, i = 0;
@@ -41,25 +59,7 @@ int main()
     fprintf(stderr, "accepted connection from %s\n", buf);
     memset(buf, 0, sizeof(buf));
     
-    bytes_read = read(client, buf, sizeof(buf));
-    FILE *fp = fopen("gettysburg", "w");
-    // read data from the client
-    while (bytesReceived = read(client, recvBuff, 1024) > 0) {
-	i++;
-	printf("Received: %llf Mb", i / 1024));
-	fflush(stdout);
-	fwrite(recvBuff, 1, bytesReceived, fp);
-        //printf("\n%s\n", (char *)buf);
-	//insertDAback(da, buf);
-        //memset(buf, 0, sizeof(buf));
-        //bytes_read = read(client, buf, sizeof(buf));
-    }
-/*
-    for (int i = 0; i < sizeDA(da); i++) {
-	fprintf(fp, "%s", (char *)getDA(da, i));
-    }
-*/
-  fclose(fp);
+		sendImage(s);
 
     // close connection
     close(client);
