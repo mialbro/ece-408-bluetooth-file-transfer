@@ -16,7 +16,7 @@ void sendFile(int socket) {
 
   printf("Enter a file to send to server: ");
   scanf("%s", fileName);
-  printf("Enter a message to send to the server\n");
+  printf("Enter a message to send to the server: ");
   scanf("%s", message);
 
 
