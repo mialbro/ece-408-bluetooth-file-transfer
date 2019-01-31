@@ -15,17 +15,24 @@ void displayString(void *string, FILE *fp) {
 }
 
 void sendFile(int socket) {
+	int imageSize = 0, bytes = 0;
+	char sendBuffer[10240] = {0};
+	
 	FILE *image = fopen("space.jpeg", "r");	// Open image to send
   fseek(image, 0, SEEK_END);		// Go to the end of the file
   imageSize = ftell(image);		// Get the image size
   fseek(image, 0, SEEK_SET);		// Go back to the beginning of the file
+	
  	write(s, (void *)&imageSize, sizeof(int));	// Send image size
   
 	// SEND FILE
-  while (feof(image != NULL) {
-	readSize = fread(sendBuffer, 1, sizeof(sendBuffer) - 1, image);	//
-		write(s, sendBuffer, readSize);
-		memset(sendBuffer, 0, sizeof(sendBuffer));
+  while (feof(image) != NULL) {
+		bytes = fread(sendBuffer, 1, sizeof(sendBuffer) - 1, image);	// read file bytes to array
+		res = write(s, &sendBuffer, bytes);
+		while (res < 0)
+			res = write(s, &sendBuffer, bytes);
+		
+		memset(sendBuffer, 0, sizeof(sendBuffer));	// Clear buffer
   }
 	fclose(image);
   return;
