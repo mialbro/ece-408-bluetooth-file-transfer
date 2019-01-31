@@ -31,7 +31,7 @@ void sendFile(int socket) {
   imageSize = ftell(image);		// Get the image size
   fseek(image, 0, SEEK_SET);		// Go back to the beginning of the file
  
-  dp {
+  do {
     status = write(socket, (void *)message, sizeof(message));	// Send a message
   } while (status < 0);
 
