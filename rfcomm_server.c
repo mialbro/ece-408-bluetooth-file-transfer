@@ -6,7 +6,7 @@
 
 #include "da.h"
 
-void getFile() {
+void getFile(int socket, int client) {
 	char imageArr[10241];
 	int size = 0, bytes = 0, bytesRead = 0;
 	FILE *image = fopen("spacex.jpeg", "w");
@@ -19,9 +19,9 @@ void getFile() {
 	
 	// Read entire file
 	while (bytesRead < size) {
-		bytes = read(s, imageArr, 10241);
+		bytes = read(socket, imageArr, 10241);
 		while (bytes < 0)
-			bytes = read(s, imageArr, 10241);
+			bytes = read(socket, imageArr, 10241);
 		
 		fwrite(imageArr, 1, bytes, image);
 		bytesRead += bytes;
@@ -59,7 +59,7 @@ int main() {
     fprintf(stderr, "accepted connection from %s\n", buf);
     memset(buf, 0, sizeof(buf));
     
-		sendImage(s);
+	sendImage(s, client);
 
     // close connection
     close(client);
