@@ -14,7 +14,8 @@ void sendFile(int socket) {
   int imageSize = 0, bytes = 0, status = 0;
   char sendBuffer[1024], fileName[100];
 
-  scanf("Enter a file to send: %s\n", fileName);
+  printf("Enter a file to send to server: ");
+  scanf("%s", fileName);
 
 
   FILE *image = fopen(fileName, "r");	// Open image to send
