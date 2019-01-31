@@ -6,10 +6,16 @@
 
 #include "da.h"
 
-void getFile(int socket, int client) {
-  char imageArr[1025];
+void getFile(int client) {
+  char imageArr[1025], fileName[100];
   int size = 0, bytes = 0, bytesRead = 0;
-  FILE *image = fopen("pi2.jpeg", "w");
+  FILE *image = 0;
+
+  do {
+    bytes = read(client, fileName, sizeof(fileName)); // Get filename
+  } while (bytes < 0);
+
+  image = fopen(fileName, "w");
 
   do {
 	bytes  = read(client, &size, sizeof(int)); // Get the size of the file
@@ -27,7 +33,6 @@ void getFile(int socket, int client) {
 	  bytesRead += bytes;
 	}
 	fclose(image);
-}
 }
 
 int main() {
@@ -56,7 +61,7 @@ int main() {
     fprintf(stderr, "accepted connection from %s\n", buf);
     memset(buf, 0, sizeof(buf));
 
-    getFile(s, client);
+    getFile(client);
 
     // close connection
     close(client);

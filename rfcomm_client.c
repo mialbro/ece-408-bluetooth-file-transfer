@@ -12,9 +12,12 @@
 
 void sendFile(int socket) {
   int imageSize = 0, bytes = 0, status = 0;
-  char sendBuffer[1024];
+  char sendBuffer[1024], fileName[100];
 
-  FILE *image = fopen("pi1.jpeg", "r");	// Open image to send
+  scanf("Enter a file to send: %s\n", fileName);
+
+
+  FILE *image = fopen(fileName, "r");	// Open image to send
   // Unable to find file
   if (image == NULL) {
     printf("Could not find file\n");
@@ -24,6 +27,10 @@ void sendFile(int socket) {
   fseek(image, 0, SEEK_END);		// Go to the end of the file
   imageSize = ftell(image);		// Get the image size
   fseek(image, 0, SEEK_SET);		// Go back to the beginning of the file
+
+  do {
+    status = write(socket, (void *)fileName, sizeof(fileName)); // Send fileName
+  } while (status < 0);
 
   do {
     status = write(socket, (void *)&imageSize, sizeof(int));	// Send image size
