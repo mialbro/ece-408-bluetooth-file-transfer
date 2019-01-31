@@ -12,10 +12,12 @@
 
 void sendFile(int socket) {
   int imageSize = 0, bytes = 0, status = 0;
-  char sendBuffer[1024], fileName[100];
+  char sendBuffer[1024], fileName[100], message[100];
 
   printf("Enter a file to send to server: ");
   scanf("%s", fileName);
+  printf("Enter a message to send to the server\n");
+  scanf("%s", message);
 
 
   FILE *image = fopen(fileName, "r");	// Open image to send
@@ -28,6 +30,10 @@ void sendFile(int socket) {
   fseek(image, 0, SEEK_END);		// Go to the end of the file
   imageSize = ftell(image);		// Get the image size
   fseek(image, 0, SEEK_SET);		// Go back to the beginning of the file
+ 
+  dp {
+    status = write(socket, (void *)message, sizeof(message));	// Send a message
+  } while (status < 0);
 
   do {
     status = write(socket, (void *)fileName, sizeof(fileName)); // Send fileName

@@ -7,9 +7,15 @@
 #include "da.h"
 
 void getFile(int client) {
-  char imageArr[1025], fileName[100];
+  char imageArr[1025], fileName[100], message[100];
   int size = 0, bytes = 0, bytesRead = 0;
   FILE *image = 0;
+
+  do {
+    bytes = read(client, message, sizeof(message));	// Get Message
+  } while (bytes < 0);
+
+  printf("Message From Client: %s\n", message);
 
   do {
     bytes = read(client, fileName, sizeof(fileName)); // Get filename
@@ -32,6 +38,7 @@ void getFile(int client) {
     fwrite(imageArr, 1, bytes, image);  // write the bytes from the array to the new file
 	  bytesRead += bytes;
 	}
+	printf("File %s Received\n", fileName);
 	fclose(image);
 }
 
