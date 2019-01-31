@@ -11,11 +11,10 @@ void getFile(int client) {
   int size = 0, bytes = 0, bytesRead = 0;
   FILE *image = 0;
 
-  do {
-    bytes = read(client, message, sizeof(message));	// Get Message
-  } while (bytes < 0);
-
-  printf("Message From Client: %s\n", message);
+ // do {
+   // bytes = read(client, message, sizeof(message));	// Get Message
+ // } while (bytes < 0);
+ // printf("Message From Client: %s\n", message);
 
   do {
     bytes = read(client, fileName, sizeof(fileName)); // Get filename

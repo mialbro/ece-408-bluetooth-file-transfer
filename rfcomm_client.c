@@ -11,14 +11,17 @@
 #include "da.h"
 
 void sendFile(int socket) {
-  int imageSize = 0, bytes = 0, status = 0;
+  int imageSize = 0, bytes = 0, status = 0, messageSize = 100;
   char sendBuffer[1024], fileName[100], message[100];
 
   printf("Enter a file to send to server: ");
-  scanf("%s", fileName);
-  printf("Enter a message to send to the server: ");
-  scanf("%s", message);
-
+  scanf("%s *[^\n] ", fileName);
+  //printf("Enter a message to send to the server: ");
+ // gets(message);
+ // getline(&message, &messageSize, stdin);
+ // fflush(stdin);
+  ///fgets(message, sizeof(message), stdin);
+   
 
   FILE *image = fopen(fileName, "r");	// Open image to send
   // Unable to find file
