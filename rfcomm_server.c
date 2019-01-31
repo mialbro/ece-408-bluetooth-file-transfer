@@ -7,24 +7,25 @@
 #include "da.h"
 
 void getFile(int socket, int client) {
-  char imageArr[10241];
+  char imageArr[1025];
   int size = 0, bytes = 0, bytesRead = 0;
-  FILE *image = fopen("spacex.jpeg", "w");
+  FILE *image = fopen("pi2.jpeg", "w");
 	
 	// Get the size of the file
-	bytes = read(client, &size, sizeof(int));
-	while (bytes < 0) 
-		bytes = read(client, &size, sizeof(int));
+    do {
+	bytes  = read(client, &size, sizeof(int));
+    } while (bytes < 0); 
 	bytes = 0;
+	printf("File Size: %d\n", size);
 	
 	// Read entire file
 	while (bytesRead < size) {
-		bytes = read(socket, imageArr, 10241);
-		while (bytes < 0)
-			bytes = read(socket, imageArr, 10241);
-		
-		fwrite(imageArr, 1, bytes, image);
-		bytesRead += bytes;
+	  do {
+	    bytes = read(client, imageArr, 1025);
+	  } while (bytes < 0);
+
+          fwrite(imageArr, 1, bytes, image);
+	  bytesRead += bytes;
 	}
 	fclose(image);
 }
