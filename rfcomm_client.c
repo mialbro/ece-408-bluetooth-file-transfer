@@ -23,7 +23,7 @@ void sendFile(int socket) {
   
 	// SEND FILE
   while (feof(image != NULL) {
-		readSize = fread(sendBuffer, 1, sizeof(sendBuffer) - 1, image);	//
+	readSize = fread(sendBuffer, 1, sizeof(sendBuffer) - 1, image);	//
 		write(s, sendBuffer, readSize);
 		memset(sendBuffer, 0, sizeof(sendBuffer));
   }
