@@ -10,28 +10,24 @@ void getFile(int socket, int client) {
   char imageArr[1025];
   int size = 0, bytes = 0, bytesRead = 0;
   FILE *image = fopen("pi2.jpeg", "w");
-	
-	// Get the size of the file
-    do {
-	bytes  = read(client, &size, sizeof(int));
-    } while (bytes < 0); 
+
+  do {
+	bytes  = read(client, &size, sizeof(int)); // Get the size of the file
+  } while (bytes < 0);
+
 	bytes = 0;
-	printf("File Size: %d\n", size);
-	
+
 	// Read entire file
 	while (bytesRead < size) {
 	  do {
-	    bytes = read(client, imageArr, 1025);
+	    bytes = read(client, imageArr, 1025);  // Read 1024 bits from the client to an arry
 	  } while (bytes < 0);
 
-          fwrite(imageArr, 1, bytes, image);
+    fwrite(imageArr, 1, bytes, image);  // write the bytes from the array to the new file
 	  bytesRead += bytes;
 	}
 	fclose(image);
 }
-
-void displayString(void *value, FILE *fp) {
-    fprintf(fp, "%s", (char *)value); 
 }
 
 int main() {
@@ -43,7 +39,7 @@ int main() {
     // allocate socket
     s = socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM);
 
-    // bind socket to port 1 of the first available 
+    // bind socket to port 1 of the first available
     // local bluetooth adapter
     loc_addr.rc_family = AF_BLUETOOTH;
     loc_addr.rc_bdaddr = *BDADDR_ANY;
@@ -59,7 +55,7 @@ int main() {
     ba2str( &rem_addr.rc_bdaddr, buf );
     fprintf(stderr, "accepted connection from %s\n", buf);
     memset(buf, 0, sizeof(buf));
-    
+
     getFile(s, client);
 
     // close connection

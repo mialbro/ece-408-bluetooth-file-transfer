@@ -10,15 +10,12 @@
 
 #include "da.h"
 
-void displayString(void *string, FILE *fp) {
-    fprintf(fp, "%s", (char *)string);
-}
-
 void sendFile(int socket) {
   int imageSize = 0, bytes = 0, status = 0;
   char sendBuffer[1024];
-	
+
   FILE *image = fopen("pi1.jpeg", "r");	// Open image to send
+  // Unable to find file
   if (image == NULL) {
     printf("Could not find file\n");
     return;
@@ -28,17 +25,19 @@ void sendFile(int socket) {
   imageSize = ftell(image);		// Get the image size
   fseek(image, 0, SEEK_SET);		// Go back to the beginning of the file
 
-do {  
-  status = write(socket, (void *)&imageSize, sizeof(int));	// Send image size
-} while (status < 0);
+  do {
+    status = write(socket, (void *)&imageSize, sizeof(int));	// Send image size
+  } while (status < 0);
+
   // SEND FILE
   while (!feof(image)) {
-    bytes = fread(sendBuffer, 1, sizeof(sendBuffer) - 1, image);	// read file bytes to array
+    bytes = fread(sendBuffer, 1, sizeof(sendBuffer) - 1, image);	// Read bytes from file to array
+
     do {
-      status = write(socket, &sendBuffer, bytes);
+      status = write(socket, &sendBuffer, bytes); // Send bytes from array to socket (client)
     } while (status < 0);
-		
-    memset(sendBuffer, 0, sizeof(sendBuffer));	// Clear buffer
+
+    memset(sendBuffer, 0, sizeof(sendBuffer));	// Clear buffer array
   }
   fclose(image);
   return;
@@ -49,7 +48,7 @@ void connectToServer(char *address) {
     int s, status;
     char dest[18];
     strcpy(dest, address);
-    
+
     // allocate a socket
     s = socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM);
 
@@ -61,7 +60,7 @@ void connectToServer(char *address) {
     // connect to server
     status = connect(s, (struct sockaddr *)&addr, sizeof(addr));
     if (status == 0) {
-      sendFile(s);	
+      sendFile(s);
     }
     else {
      perror("Unable To Send Data");
