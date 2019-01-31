@@ -14,13 +14,27 @@ void displayString(void *string, FILE *fp) {
     fprintf(fp, "%s", (char *)string);
 }
 
-void connectToServer(char *address, DA *);
+void sendFile(int socket) {
+	FILE *image = fopen("space.jpeg", "r");	// Open image to send
+  fseek(image, 0, SEEK_END);		// Go to the end of the file
+  imageSize = ftell(image);		// Get the image size
+  fseek(image, 0, SEEK_SET);		// Go back to the beginning of the file
+ 	write(s, (void *)&imageSize, sizeof(int));	// Send image size
+  
+	// SEND FILE
+  while (feof(image != NULL) {
+		readSize = fread(sendBuffer, 1, sizeof(sendBuffer) - 1, image);	//
+		write(s, sendBuffer, readSize);
+		memset(sendBuffer, 0, sizeof(sendBuffer));
+  }
+	fclose(image);
+  return;
+}
 
-void connectToServer(char *address, DA *da) {
+void connectToServer(char *address) {
     struct sockaddr_rc addr = { 0 };
     int s, status;
     char dest[18];
-    char message[50];
     strcpy(dest, address);
     
     // allocate a socket
@@ -33,29 +47,16 @@ void connectToServer(char *address, DA *da) {
 
     // connect to server
     status = connect(s, (struct sockaddr *)&addr, sizeof(addr));
-    
-    FILE *fp = fopen("gettysburg", "rb");
-    while (fscanf(fp, "%c", message) != EOF) {
-        char *newData = malloc(sizeof(message));
-        memcpy(newData, message, sizeof(message));
-        insertDAback(da, newData);
-    }
-    
-    for (int i = 0; i < sizeDA(da); i++) {
-        status = write(s, getDA(da, i), sizeof(getDA(da, i)));
-    }
-
-    if ( status < 0 ) 
-	perror("Unable To Send Data");
-
-    close(s);
-    return;
+    if (status == 0) {
+			sendFile(s);	
+		}
+	else {
+		perror("Unable To Send Data");
+	}
+	close(s);
 }
 
 int main() {
-    DA *da = newDA();
-    debugDA(da, 0);
-    setDAdisplay(da, displayString);
-    connectToServer("B8:27:EB:DC:E7:05", da); // Connect to raspberry pi
+    connectToServer("B8:27:EB:DC:E7:05"); // Connect to raspberry pi
     return 0;
 }
