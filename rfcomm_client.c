@@ -15,26 +15,26 @@ void displayString(void *string, FILE *fp) {
 }
 
 void sendFile(int socket) {
-	int imageSize = 0, bytes = 0;
-	char sendBuffer[10240] = {0};
+  int imageSize = 0, bytes = 0, status = 0;
+  char sendBuffer[10240] = {0};
 	
-	FILE *image = fopen("space.jpeg", "r");	// Open image to send
+  FILE *image = fopen("space.jpeg", "r");	// Open image to send
   fseek(image, 0, SEEK_END);		// Go to the end of the file
   imageSize = ftell(image);		// Get the image size
   fseek(image, 0, SEEK_SET);		// Go back to the beginning of the file
 	
- 	write(s, (void *)&imageSize, sizeof(int));	// Send image size
+  write(socket, (void *)&imageSize, sizeof(int));	// Send image size
   
-	// SEND FILE
-  while (feof(image) != NULL) {
-		bytes = fread(sendBuffer, 1, sizeof(sendBuffer) - 1, image);	// read file bytes to array
-		res = write(s, &sendBuffer, bytes);
-		while (res < 0)
-			res = write(s, &sendBuffer, bytes);
+  // SEND FILE
+  while (!feof(image)) {
+    bytes = fread(sendBuffer, 1, sizeof(sendBuffer) - 1, image);	// read file bytes to array
+    status = write(socket, &sendBuffer, bytes);
+    while (status < 0)
+      status = write(socket, &sendBuffer, bytes);
 		
-		memset(sendBuffer, 0, sizeof(sendBuffer));	// Clear buffer
+    memset(sendBuffer, 0, sizeof(sendBuffer));	// Clear buffer
   }
-	fclose(image);
+  fclose(image);
   return;
 }
 
@@ -55,12 +55,12 @@ void connectToServer(char *address) {
     // connect to server
     status = connect(s, (struct sockaddr *)&addr, sizeof(addr));
     if (status == 0) {
-			sendFile(s);	
-		}
-	else {
-		perror("Unable To Send Data");
-	}
-	close(s);
+      sendFile(s);	
+    }
+    else {
+     perror("Unable To Send Data");
+    }
+   close(s);
 }
 
 int main() {
