@@ -6,6 +6,7 @@
 #include <bluetooth/hci.h>
 #include <bluetooth/hci_lib.h>
 #include <string.h>
+#include <iostream>
 #include <bluetooth/rfcomm.h>
 
 void sendFile(int socket) {
