@@ -9,8 +9,11 @@
 #include <bluetooth/rfcomm.h>
 
 void sendFile(int socket) {
-  int imageSize = 0, bytes = 0, status = 0, messageSize = 100;
+  int imageSize = 0, bytes = 0, status = 0;
   char sendBuffer[1024], fileName[100], message[100];
+
+  printf("Enter Message: ");
+  fgets(message, sizeof(message), stdin);
 
   printf("Enter a file to send to server: ");
   scanf("%s", fileName);
@@ -26,9 +29,9 @@ void sendFile(int socket) {
   imageSize = ftell(image);		// Get the image size
   fseek(image, 0, SEEK_SET);		// Go back to the beginning of the file
  
-  //do {
-   // status = write(socket, (void *)message, sizeof(message));	// Send a message
-  //} while (status < 0);
+  do {
+       status = write(socket, (void *)message, sizeof(message));	// Send a message
+  } while (status < 0);
 
   do {
     status = write(socket, (void *)fileName, sizeof(fileName)); // Send fileName
